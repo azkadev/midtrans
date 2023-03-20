@@ -3,3 +3,5 @@
 .dart_tool/
 
 /bin/
+
+*.json

@@ -63,7 +63,37 @@ void main(List<String> args) async {
       "custom_field1": "custom field 1 content",
       "custom_field2": "custom field 2 content",
       "custom_field3": "custom field 3 content"
-    }
+    },
+    {
+      "@type": "ChargeTransaction",
+      "payment_type": "gopay",
+      "transaction_details": {
+        "@type": "transaction_details",
+        "order_id": "order-id-123",
+        "gross_amount": 100000,
+      },
+      "customer_details": {
+        "@type":"customer_details",
+        "first_name": "Budi",
+        "last_name": "Utomo",
+        "email": "budi.utomo@midtrans.com",
+        "phone": "081223323423",
+      },
+      "custom_field1": "custom field 1 content",
+      "custom_field2": "custom field 2 content",
+      "custom_field3": "custom field 3 content",
+      "custom_expiry": {
+        "@type": "custom_expiry",
+        "expiry_duration": 60,
+        "unit": "minute",
+      },
+      "metadata": {
+        "@type": "metadata",
+        "you": "can",
+        "put": "any",
+        "parameter": "you like",
+      },
+    },
   ];
   await jsonToScripts(scripts_origin, directory: Directory(path.join(Directory.current.path, "lib", "api")));
 }

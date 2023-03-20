@@ -5,6 +5,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:midtrans_dart/api/create_invoice.dart';
 import "api/api.dart" as midtrans_api;
+import "scheme/scheme.dart" as midtrans_scheme;
 
 class Midtrans {
   String api_key = "";
@@ -15,7 +16,7 @@ class Midtrans {
     api_key = apiKey;
   }
 
-  Future<http.Response> invoke({
+  Future<Map> invoke({
     required String method_api,
     Map? parameters,
     String method = "post",
@@ -26,7 +27,7 @@ class Midtrans {
     apiKey ??= api_key;
     Uri url_api = Uri.parse("https://api.midtrans.com/v1").replace(
       host: (isSandbox) ? "api.sandbox.midtrans.com" : null,
-      path: "/v1/${method_api}",
+      path: method_api,
     );
 
     Map<String, String> headers = {
@@ -48,19 +49,32 @@ class Midtrans {
       response = await http.head(url_api, headers: headers);
     } else {
       response = await http.post(url_api, headers: headers, body: json.encode(parameters));
-    } 
+    }
+    Map result_data = {"@type": "error"};
+    try {
+      result_data = {"@type": "ok", ...json.decode(response.body)};
+    } catch (e) {
+      if (e is FormatException) {
+        result_data["message"] = "format_bad";
+      } else {}
+    }
     if (response.statusCode == 200) {
-    } else {}
-    return response;
+      result_data["@type"] = "ok";
+    } else {
+
+      result_data["@type"] = "error";
+    }
+
+    return result_data;
   }
 
-  Future<http.Response> createInvoice({
+  Future<Map> createInvoice({
     required midtrans_api.CreateInvoice createInvoice,
     bool isSandbox = false,
     String? apiKey,
   }) async {
     return await invoke(
-      method_api: "payment-links",
+      method_api: "/v1/payment-links",
       parameters: createInvoice.toJson(),
       method: "post",
       isSandbox: isSandbox,
@@ -68,26 +82,26 @@ class Midtrans {
     );
   }
 
-  Future<http.Response> revokeInvoice({
+  Future<Map> revokeInvoice({
     required String invoiceId,
     bool isSandbox = false,
     String? apiKey,
   }) async {
     return await invoke(
-      method_api: "payment-links/${invoiceId}",
+      method_api: "/v1/payment-links/${invoiceId}",
       method: "delete",
       isSandbox: isSandbox,
       apiKey: apiKey,
     );
   }
 
-  Future<http.Response> createPayout({
+  Future<Map> createPayout({
     required midtrans_api.CreateInvoice createInvoice,
     bool isSandbox = false,
     String? apiKey,
   }) async {
     return await invoke(
-      method_api: "payment-links",
+      method_api: "/v1/payment-links",
       parameters: createInvoice.toJson(),
       method: "post",
       isSandbox: isSandbox,
@@ -95,12 +109,25 @@ class Midtrans {
     );
   }
 
-  Future<http.Response> getBalance({
+  Future<Map> getInvoice({
+    required String order_id_or_transaction_id,
     bool isSandbox = false,
     String? apiKey,
   }) async {
     return await invoke(
-      method_api: "balance",
+      method_api: "/v2/${order_id_or_transaction_id}/status",
+      method: "get",
+      isSandbox: isSandbox,
+      apiKey: apiKey,
+    );
+  }
+
+  Future<Map> getBalance({
+    bool isSandbox = false,
+    String? apiKey,
+  }) async {
+    return await invoke(
+      method_api: "/v1/balance",
       method: "get",
       isSandbox: isSandbox,
       apiKey: apiKey,

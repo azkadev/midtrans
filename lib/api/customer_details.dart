@@ -10,7 +10,7 @@ class CustomerDetails extends JsonDart {
   CustomerDetails(super.rawData);
    
   static Map get defaultData {
-    return {"@type":"customer_details","first_name":"John","last_name":"Doe","email":"john.doe@midtrans.com","phone":"+62181000000000","notes":"Thank you for your purchase. Please follow the instructions to pay.","customer_details_required_fields":["first_name","phone","email"]};
+    return {"@type":"customer_details","first_name":"Budi","last_name":"Utomo","email":"budi.utomo@midtrans.com","phone":"081223323423","notes":"Thank you for your purchase. Please follow the instructions to pay.","customer_details_required_fields":["first_name","phone","email"]};
   }
 
   
