@@ -71,6 +71,7 @@ void main(List<String> args) async {
         "@type": "transaction_details",
         "order_id": "order-id-123",
         "gross_amount": 100000,
+        "payment_link_id": "for-payment-123",
       },
       "customer_details": {
         "@type":"customer_details",
