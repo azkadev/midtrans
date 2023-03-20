@@ -34,7 +34,7 @@ raw request
 ```dart
 
   print((await midtrans.invoke(
-    method_api: "bank_accounts",
+    method_api: "/v1/bank_accounts",
     parameters: {
       
     },
