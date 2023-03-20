@@ -1,9 +1,8 @@
-// ignore_for_file: unnecessary_brace_in_string_interps
+// ignore_for_file: unnecessary_brace_in_string_interps, non_constant_identifier_names, unused_import
 
 import 'dart:convert';
 
-import 'package:http/http.dart' as http;
-import 'package:midtrans_dart/api/create_invoice.dart';
+import 'package:http/http.dart' as http; 
 import "api/api.dart" as midtrans_api;
 import "scheme/scheme.dart" as midtrans_scheme;
 
