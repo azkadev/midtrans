@@ -1,2 +1,23 @@
-A sample command-line application with an entrypoint in `bin/`, library code
-in `lib/`, and example unit test in `test/`.
+# Midtans
+
+
+```dart
+import 'package:midtrans_dart/api/api.dart';
+import 'package:midtrans_dart/midtrans_dart.dart'; 
+
+void main(List<String> arguments) async {
+  Midtrans midtrans = Midtrans(
+    apiKey: "SB-Mid-server-smakmskamsk343p",
+  );
+
+  var res = await midtrans.createInvoice(
+    createInvoice: CreateInvoice.create(
+      transaction_details: TransactionDetails.create(order_id: "order_jasa_dev_slebew", gross_amount: 1000),
+      usage_limit: 1,
+    ),
+    isSandbox: true,
+  );
+  print(res.body);
+}
+
+```
