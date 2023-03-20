@@ -27,3 +27,19 @@ void main(List<String> arguments) async {
 }
 
 ```
+
+
+raw request
+
+```dart
+
+  print((await midtrans.invoke(
+    method_api: "bank_accounts",
+    parameters: {
+      
+    },
+    method: "get",
+    isSandbox: true,
+    apiKey: "",
+  )).body);
+```
