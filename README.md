@@ -1,5 +1,11 @@
 # Midtans
 
+Midtrans payment gateway indonesia
+
+```bash
+dart pub add midtrans_dart
+```
+
 
 ```dart
 import 'package:midtrans_dart/api/api.dart';
