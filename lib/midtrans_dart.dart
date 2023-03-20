@@ -18,6 +18,7 @@ class Midtrans {
   Future<http.Response> invoke({
     required String method_api,
     Map? parameters,
+    String method = "post",
     bool isSandbox = false,
     String? apiKey,
   }) async {
@@ -35,25 +36,72 @@ class Midtrans {
     };
 
     late http.Response response;
-    response = await http.post(url_api, headers: headers, body: json.encode(parameters));
-
-    if (response.statusCode == 200){
-
-    }else {
-      
-    }
+    if (method == "get") {
+      response = await http.get(url_api, headers: headers);
+    } else if (method == "delete") {
+      response = await http.delete(url_api, headers: headers, body: json.encode(parameters));
+    } else if (method == "patch") {
+      response = await http.patch(url_api, headers: headers, body: json.encode(parameters));
+    } else if (method == "put") {
+      response = await http.put(url_api, headers: headers, body: json.encode(parameters));
+    } else if (method == "head") {
+      response = await http.head(url_api, headers: headers);
+    } else {
+      response = await http.post(url_api, headers: headers, body: json.encode(parameters));
+    } 
+    if (response.statusCode == 200) {
+    } else {}
     return response;
   }
 
- 
-  Future<http.Response>  createInvoice({
+  Future<http.Response> createInvoice({
     required midtrans_api.CreateInvoice createInvoice,
     bool isSandbox = false,
     String? apiKey,
   }) async {
-  return  await invoke(
+    return await invoke(
       method_api: "payment-links",
       parameters: createInvoice.toJson(),
+      method: "post",
+      isSandbox: isSandbox,
+      apiKey: apiKey,
+    );
+  }
+
+  Future<http.Response> revokeInvoice({
+    required String invoiceId,
+    bool isSandbox = false,
+    String? apiKey,
+  }) async {
+    return await invoke(
+      method_api: "payment-links/${invoiceId}",
+      method: "delete",
+      isSandbox: isSandbox,
+      apiKey: apiKey,
+    );
+  }
+
+  Future<http.Response> createPayout({
+    required midtrans_api.CreateInvoice createInvoice,
+    bool isSandbox = false,
+    String? apiKey,
+  }) async {
+    return await invoke(
+      method_api: "payment-links",
+      parameters: createInvoice.toJson(),
+      method: "post",
+      isSandbox: isSandbox,
+      apiKey: apiKey,
+    );
+  }
+
+  Future<http.Response> getBalance({
+    bool isSandbox = false,
+    String? apiKey,
+  }) async {
+    return await invoke(
+      method_api: "balance",
+      method: "get",
       isSandbox: isSandbox,
       apiKey: apiKey,
     );
